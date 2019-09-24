@@ -20,4 +20,5 @@ public class UserDetailsServiceImpl  implements UserDetailsService {
         return User.withUsername(username).password(passwordEncoder
                 .encode("123456")).authorities("ROLE_ADMIN").build();
     }
+
 }
