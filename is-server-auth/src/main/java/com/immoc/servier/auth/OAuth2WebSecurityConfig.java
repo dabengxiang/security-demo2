@@ -26,6 +26,11 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 
 
+//    public static void main(String[] args) {
+//        String encode = new BCryptPasswordEncoder().encode("123456");
+//        System.out.println(encode);
+//    }
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

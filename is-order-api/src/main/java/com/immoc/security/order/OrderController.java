@@ -1,9 +1,6 @@
 package com.immoc.security.order;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("order")
@@ -20,15 +17,15 @@ public class OrderController {
     }
 
 
-//    @GetMapping("/get/{id}")
-//    public OrderInfo save(@PathVariable String id ,@AuthenticationPrincipal MyUser user){
-//
-//        System.out.println(id);
-//        OrderInfo orderInfo = new OrderInfo();
-//        orderInfo.setId(user.getUserId());
-//        orderInfo.setName(user.getUserName());
-//        return orderInfo;
-//    }
+    @GetMapping("/get/{id}")
+    public OrderInfo save(@PathVariable String id ,@RequestHeader("username") String username){
+
+        System.out.println(id);
+        OrderInfo orderInfo = new OrderInfo();
+        orderInfo.setId("2");
+        orderInfo.setName(username);
+        return orderInfo;
+    }
 //
 //
 //    @GetMapping("/getUserId/{id}")

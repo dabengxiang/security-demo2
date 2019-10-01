@@ -1,0 +1,10 @@
+server:
+  port: 8070
+spring:
+  application:
+    name: auth-admin
+zuul:
+  sensitive-headers:
+  routes:
+    api:
+      url: http://127.0.0.1:7070
