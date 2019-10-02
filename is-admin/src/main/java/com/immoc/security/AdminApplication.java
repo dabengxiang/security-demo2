@@ -59,14 +59,14 @@ public class AdminApplication {
     }
 
 
-    @PostMapping("/layout")
-    public  void login(HttpServletRequest request){
+    @PostMapping("/logout")
+    public  void logout(HttpServletRequest request){
         HttpSession session = request.getSession();
         session.invalidate();
 
     }
 
-    @PostMapping("/me")
+    @GetMapping("/me")
     public  ResultVO me(HttpServletRequest request){
         HttpSession session = request.getSession();
         TokenInfo token = (TokenInfo) session.getAttribute("token");
@@ -75,20 +75,30 @@ public class AdminApplication {
     }
 
 
+    @PostMapping("/sessionLogout")
+    public  void sessionLogout(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.invalidate();
+
+    }
+
+
+
+
 
     @GetMapping("/oauth/callback")
     public void callback(@RequestParam(value = "code",required = false) String code,
                          HttpServletRequest request , HttpServletResponse response) throws IOException {
         if(code!=null){
             System.out.println(code);
-            String url = "http://127.0.0.1:7070/token/oauth/token";
+            String url = "http://admin.immoc.com:7070/token/oauth/token";
 
             MultiValueMap params = new LinkedMultiValueMap();
             params.add("grant_type","authorization_code");
 
             params.add("code" ,code );
 
-            params.add("redirect_uri","http://127.0.0.1:8070/oauth/callback");
+            params.add("redirect_uri","http://admin.immoc.com:8070/oauth/callback");
 
 //            params.add("client_id","admin");
 //
@@ -105,7 +115,7 @@ public class AdminApplication {
 
             HttpSession session = request.getSession();
             session.setAttribute("token",exchange.getBody());
-            response.sendRedirect("http://127.0.0.1:8000");
+            response.sendRedirect("http://admin.immoc.com:8000");
 
         }
 
