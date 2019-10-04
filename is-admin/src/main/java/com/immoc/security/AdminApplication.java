@@ -76,9 +76,11 @@ public class AdminApplication {
 
 
     @PostMapping("/sessionLogout")
-    public  void sessionLogout(HttpServletRequest request){
+    public  ResultVO sessionLogout(HttpServletRequest request){
         HttpSession session = request.getSession();
         session.invalidate();
+        return ResultVOUtil.success();
+
 
     }
 
@@ -91,7 +93,7 @@ public class AdminApplication {
                          HttpServletRequest request , HttpServletResponse response) throws IOException {
         if(code!=null){
             System.out.println(code);
-            String url = "http://admin.immoc.com:7070/token/oauth/token";
+            String url = "http://gateway.immoc.com:7070/token/oauth/token";
 
             MultiValueMap params = new LinkedMultiValueMap();
             params.add("grant_type","authorization_code");
@@ -100,9 +102,6 @@ public class AdminApplication {
 
             params.add("redirect_uri","http://admin.immoc.com:8070/oauth/callback");
 
-//            params.add("client_id","admin");
-//
-//            params.add("client_secret","123456");
 
 
             HttpHeaders headers = new HttpHeaders();
@@ -111,10 +110,9 @@ public class AdminApplication {
             HttpEntity httpEntity = new HttpEntity(params,headers);
 
             ResponseEntity<TokenInfo> exchange = restTemplate.exchange(url, HttpMethod.POST, httpEntity, TokenInfo.class);
-            System.out.println(exchange.getBody());
 
             HttpSession session = request.getSession();
-            session.setAttribute("token",exchange.getBody());
+            session.setAttribute("token",exchange.getBody().init());
             response.sendRedirect("http://admin.immoc.com:8000");
 
         }
