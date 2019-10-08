@@ -15,6 +15,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -60,17 +61,18 @@ public class AdminApplication {
 
 
     @PostMapping("/logout")
-    public  void logout(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        session.invalidate();
+    public  void logout(HttpServletRequest request,HttpServletResponse response){
+
+        response.addCookie(CookieUtils.createCookie("access_token",null,0));
+
 
     }
 
     @GetMapping("/me")
     public  ResultVO me(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        TokenInfo token = (TokenInfo) session.getAttribute("token");
-        return ResultVOUtil.success(token);
+        Cookie access_token = CookieUtils.getCookie(request, "access_token");
+        return ResultVOUtil.success(access_token);
+
 
     }
 
@@ -111,16 +113,19 @@ public class AdminApplication {
 
             ResponseEntity<TokenInfo> exchange = restTemplate.exchange(url, HttpMethod.POST, httpEntity, TokenInfo.class);
 
-            HttpSession session = request.getSession();
-            session.setAttribute("token",exchange.getBody().init());
+            TokenInfo tokenInfo = exchange.getBody();
+            response.addCookie(CookieUtils.createCookie("access_token",tokenInfo.getAccess_token(),tokenInfo.getExpires_in().intValue()));
+            response.addCookie(CookieUtils.createCookie("refresh_token",tokenInfo.getRefresh_token(),2592000));
             response.sendRedirect("http://admin.immoc.com:8000");
 
         }
 
-
-
-
     }
+
+
+
+
+
 
 
 }
