@@ -10,8 +10,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Component
 public class CookieTokenFilter extends ZuulFilter {
@@ -71,6 +69,12 @@ public class CookieTokenFilter extends ZuulFilter {
                     return null;
                 }
 
+            }else{
+                currentContext.getResponse().setContentType("application/json");
+                currentContext.setResponseStatusCode(500);
+                currentContext.setResponseBody("{\"message\":\"refresh fail\"}");
+                currentContext.setSendZuulResponse(false);
+                return null;
             }
 
         }else{

@@ -2,13 +2,10 @@ package com.immoc.security;
 
 import com.immoc.security.utils.ResultVO;
 import com.immoc.security.utils.ResultVOUtil;
-import com.sun.net.httpserver.Headers;
-import jdk.nashorn.internal.parser.Token;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
-import org.springframework.cloud.netflix.zuul.EnableZuulServer;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -20,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -86,6 +82,14 @@ public class AdminApplication {
 
     }
 
+
+    @PostMapping("/tokenLogout")
+    public  ResultVO tokenLogout(HttpServletRequest request,HttpServletResponse response){
+        response.addCookie(CookieUtils.createCookie("access_token",null,0));
+        response.addCookie(CookieUtils.createCookie("refresh_token",null,0));
+        return ResultVOUtil.success();
+
+    }
 
 
 

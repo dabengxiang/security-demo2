@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
-import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
 import javax.sql.DataSource;
 
@@ -41,7 +40,7 @@ public class OAuth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         //直接冲内存里面读
-        //clients.inMemory().withClient("order-app").secret(passwordEncoder.encode("123456")).scopes("read","write").resourceIds("order-app").authorizedGrantTypes("password");
+//        clients.inMemory().withClient("order-app").secret(passwordEncoder.encode("123456")).scopes("read","write").resourceIds("order-app").authorizedGrantTypes("password");
         clients.jdbc(dataSource);
     }
 
