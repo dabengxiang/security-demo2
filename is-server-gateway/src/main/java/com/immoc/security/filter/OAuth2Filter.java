@@ -10,7 +10,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -21,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Author: gyc
  * @Date: 2019/9/25 11:20
  */
-@Component
+//@Component
 @Slf4j
 public class OAuth2Filter extends ZuulFilter {
 

@@ -2,6 +2,7 @@ package com.immoc.servier.auth;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,7 +11,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import javax.sql.DataSource;
 
@@ -46,15 +49,37 @@ public class OAuth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.checkTokenAccess("isAuthenticated()");
+        security.checkTokenAccess("isAuthenticated()").tokenKeyAccess("isAuthenticated()");
     }
 
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+
         endpoints.userDetailsService(userDetailsService);
         endpoints.authenticationManager(authenticationManager);
-        endpoints.tokenStore(new JdbcTokenStore(dataSource));
+        endpoints.tokenStore(tokenStore());
+        endpoints.tokenEnhancer(tokenEnhancer());
+    }
+
+
+    @Bean
+
+    public TokenStore tokenStore(){
+//        JdbcTokenStore jdbcTokenStore = new JdbcTokenStore(dataSource);
+        JwtTokenStore jwtTokenStore = new JwtTokenStore(tokenEnhancer());
+        return jwtTokenStore;
+
+    }
+
+
+
+    @Bean
+    public JwtAccessTokenConverter tokenEnhancer(){
+        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        jwtAccessTokenConverter.setSigningKey("123456");
+        return jwtAccessTokenConverter;
+
     }
 
 

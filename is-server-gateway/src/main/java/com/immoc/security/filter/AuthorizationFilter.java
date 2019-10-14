@@ -6,7 +6,6 @@ import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Date: 2019/9/25 10:56
  */
 @Slf4j
-@Component
+//@Component
 public class AuthorizationFilter extends ZuulFilter {
     public String filterType() {
         return "pre";

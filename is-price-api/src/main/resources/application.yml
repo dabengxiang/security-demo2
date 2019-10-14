@@ -1,13 +1,11 @@
-spring:
-  application:
-    name: order-app
 server:
-  port: 9081
+  port: 9082
+
 security:
   oauth2:
     client:
-      client-id: order-app
       client-secret: 123456
+      client-id: price-app
     resource:
       jwt:
         key-uri: http://auth.immoc.com:9090/oauth/token_key

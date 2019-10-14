@@ -9,6 +9,8 @@ public class OrderInfo {
 
     private String name;
 
+    private String price;
+
     public String getId() {
         return id;
     }
@@ -23,6 +25,14 @@ public class OrderInfo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }
 

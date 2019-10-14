@@ -5,6 +5,7 @@ spring:
   application:
     name: gateway-app
 
+
 zuul:
   sensitive-headers:
   routes:
@@ -14,3 +15,14 @@ zuul:
       url: http://127.0.0.1:9081
     user:
       url: http://127.0.0.1:9081
+
+
+
+security:
+  oauth2:
+    client:
+      client-id: gateway
+      client-secret: 123456
+    resource:
+      jwt:
+        key-uri: http://auth.immoc.com:9090/oauth/token_key
