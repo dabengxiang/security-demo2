@@ -21,7 +21,7 @@ zuul:
 security:
   oauth2:
     client:
-      client-id: gateway
+      client-id: gateway-app
       client-secret: 123456
     resource:
       jwt:
