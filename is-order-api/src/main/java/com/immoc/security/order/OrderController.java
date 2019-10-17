@@ -1,5 +1,8 @@
 package com.immoc.security.order;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -49,15 +52,31 @@ public class OrderController {
     }
 
     @GetMapping("/getOrder/{orderId}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PreAuthorize("#oauth2.hasScope('write')")
     public OrderInfo getOrder(@AuthenticationPrincipal String username,@PathVariable String orderId){
-        String price = restTemplate.getForObject("http://127.0.0.1:9082/price/getPrice/" + orderId, String.class);
-        OrderInfo orderInfo = new OrderInfo();
-        orderInfo.setId("2");
-        orderInfo.setName("abc");
-        orderInfo.setPrice(price);
-        return orderInfo;
+
+
+            Entry entry = null;
+            try {
+                entry = SphU.entry("getOrder");
+                String price = restTemplate.getForObject("http://127.0.0.1:9082/price/getPrice/" + orderId, String.class);
+                OrderInfo orderInfo = new OrderInfo();
+                orderInfo.setId("2");
+                orderInfo.setName("abc");
+                orderInfo.setPrice(price);
+                return orderInfo;
+
+            } catch (BlockException e1) {
+                /*流控逻辑处理 - 开始*/
+                System.out.println("block!");
+                /*流控逻辑处理 - 结束*/
+            } finally {
+                if (entry != null) {
+                    entry.exit();
+                }
+            }
+
+            return null;
 
 
     }

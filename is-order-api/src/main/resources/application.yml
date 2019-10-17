@@ -1,6 +1,13 @@
 spring:
   application:
     name: order-app
+  cloud:
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:8060
+
+
 server:
   port: 9081
 security:
@@ -11,3 +18,5 @@ security:
     resource:
       jwt:
         key-uri: http://auth.immoc.com:9090/oauth/token_key
+
+
